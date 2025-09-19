@@ -58,8 +58,8 @@ def extract_problem(problem_text: str, max_new_tokens: int = 80) -> str:
 
 # === Main Script: Load CSV, Clean, Save ===
 def main():
-    input_path = "final_missing_in_resolutions.csv"
-    out_path = "Ticket_clean_problems_sample.csv"
+    input_path = "Ticket_file_clean.csv"
+    out_path = "Ticket_clean_problems.csv"
 
     df = pd.read_csv(input_path, dtype={"TICKETID": str})
 
