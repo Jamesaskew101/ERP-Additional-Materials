@@ -25,7 +25,7 @@ try:
 
 
 
-# Creating problem prompt to
+# Creating problem prompt to extract main problem a user is having without waffle, such as introductions.
 def make_prompt(problem_text: str) -> str:
     messages = [
         {"role": "system", "content": "You are a helpful support assistant."},
@@ -37,7 +37,7 @@ Please rewrite the actual technical issue clearly in plain English, without gree
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False)
 
-# === Inference Function ===
+#Inference Function
 @torch.inference_mode()
 def extract_problem(problem_text: str, max_new_tokens: int = 80) -> str:
     prompt = make_prompt(problem_text)
@@ -66,8 +66,6 @@ def main():
     if "TICKETID" not in df.columns or "PROBLEM" not in df.columns:
         raise ValueError("Input file must contain columns: 'TICKETID' and 'PROBLEM'.")
 
-    
-
     cleaned = []
     for _, row in df.iterrows():
         ticket_id = str(row["TICKETID"])
@@ -77,7 +75,7 @@ def main():
 
     out_df = pd.DataFrame(cleaned, columns=["TICKETID", "CLEAN_PROBLEM"])
     out_df.to_csv(out_path, index=False)
-    print(f"✅ Processed first {len(out_df)} rows and saved to {out_path}")
+
 
 if __name__ == "__main__":
     main()
