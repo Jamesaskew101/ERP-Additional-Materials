@@ -48,7 +48,7 @@ def generate_summary(resolution_text: str, max_new_tokens: int = 160) -> str:
 
 # Main script loop 
 def main():
-    input_path = "Ticket_query_resolution.csv"
+    input_path = "ticket_query_resolution.csv"
     out_path = "Ticket_resolution_summaries.csv"
 
     df = pd.read_csv(input_path, dtype={"TICKETID": str})
