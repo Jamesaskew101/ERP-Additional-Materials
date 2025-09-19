@@ -26,7 +26,7 @@ def make_prompt(resolution_text: str) -> str:
 {resolution_text.strip()}
 Please summarise the key actions taken to resolve the issue, clearly and concisely in plain English.
 Do not include the original problem, ticket numbers, greetings, or irrelevant details.
-Do not use bullet points or numbers. Keep the response under 100 words."""}
+Do not use bullet points or numbers. Do not include any personal information such as username or passwords. Keep the response under 100 words."""}
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False)
 
