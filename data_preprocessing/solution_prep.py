@@ -17,7 +17,7 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="auto",
     token=HF_TOKEN)
 
-# Create prompt asking model to extract key problem a user is having
+# Create prompt asking model to extract key steps professionals took when resolving a given problem
 def make_prompt(resolution_text: str) -> str:
     messages = [
         {"role": "system", "content": "You are a helpful support assistant."},
