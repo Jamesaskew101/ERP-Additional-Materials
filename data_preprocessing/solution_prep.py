@@ -15,7 +15,8 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
     torch_dtype=torch.float16,
     device_map="auto",
-    token=HF_TOKEN)
+    token=HF_TOKEN
+)
 
 # Create prompt asking model to extract key steps professionals took when resolving a given problem
 def make_prompt(resolution_text: str) -> str:
@@ -29,7 +30,7 @@ Do not use bullet points or numbers. Keep the response under 100 words."""}
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False)
 
-#Creating Inference
+# Creating Inference
 @torch.inference_mode()
 def generate_summary(resolution_text: str, max_new_tokens: int = 160) -> str:
     prompt = make_prompt(resolution_text)
@@ -45,12 +46,12 @@ def generate_summary(resolution_text: str, max_new_tokens: int = 160) -> str:
     decoded = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
     return decoded
 
-#Main script loop 
+# Main script loop 
 def main():
-    input_path = "Ticket_query_resolution.xlsx"
+    input_path = "Ticket_query_resolution.csv"
     out_path = "Ticket_resolution_summaries.csv"
 
-    df = pd.read_excel(input_path, dtype={"TICKETID": str})
+    df = pd.read_csv(input_path, dtype={"TICKETID": str})
     if "TICKETID" not in df.columns or "RESOLUTION" not in df.columns:
         raise ValueError("Input file must contain columns: 'TICKETID' and 'RESOLUTION'.")
 
