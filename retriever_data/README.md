@@ -13,7 +13,6 @@ The retriever is responsible for encoding problem descriptions into dense vector
   - Saves outputs into:
     - `embeddings.npy` → Dense vector representations of ticket problems.  
     - `metadata.parquet` → Metadata (ticket ID, problem text, resolution summary, urgency code, category).  
-    - `retriever_debug_sample.csv` → A small sample of 50 rows for quick inspection.  
 
 ---
 
