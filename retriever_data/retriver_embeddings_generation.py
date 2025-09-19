@@ -59,10 +59,6 @@ df["tokens"] = df["CLEAN_PROBLEM"].apply(fast_tokenize)
 print("\n=== Sample metadata with embedding text and tokens ===")
 print(df[META_COLS + ["__embed_text__", "tokens"]].head(5).to_string())
 
-# Optional: save debug sample
-df[META_COLS + ["__embed_text__", "tokens"]].head(50).to_csv("retriever_debug_sample.csv", index=False)
-print("✅ Wrote first 50 rows to retriever_debug_sample.csv for inspection")
-
 # ---------- Generate Embeddings ----------
 print("\n🔍 Generating sentence embeddings...")
 model = SentenceTransformer(EMBED_MODEL_NAME)
