@@ -2,21 +2,19 @@ import torch
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# === Model and Token Config ===
+#Model configuration
 MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 HF_TOKEN = "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"
 
-# === Load Tokenizer and Model Safely ===
+#Load tokenizer
 try:
-    print("🧠 Loading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(
         MODEL_PATH,
         token=HF_TOKEN
     )
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-
-    print("🧠 Loading model...")
+        
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_PATH,
         torch_dtype=torch.float16,
@@ -25,11 +23,9 @@ try:
     )
     model.eval()
 
-except Exception as e:
-    print("❌ Failed to load model or tokenizer. Check HF token or model ID.")
-    raise e
 
-# === Prompt Template Using Chat Format ===
+
+# Creating problem prompt to
 def make_prompt(problem_text: str) -> str:
     messages = [
         {"role": "system", "content": "You are a helpful support assistant."},
