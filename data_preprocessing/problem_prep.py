@@ -23,7 +23,9 @@ try:
     )
     model.eval()
 
-
+except Exception as e:
+    print("Failed to load model or tokenizer.")
+    raise e
 
 # Creating problem prompt to extract main problem a user is having without waffle, such as introductions.
 def make_prompt(problem_text: str) -> str:
