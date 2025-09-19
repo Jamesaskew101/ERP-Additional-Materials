@@ -2,12 +2,11 @@ import torch
 import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# === Config ===
+# Getting pathway and HF token from hugging face
 MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 HF_TOKEN = "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"
 
-# === Load Tokenizer and Model ===
-print("🧠 Loading tokenizer and model...")
+# Load Tokenizer and Model 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, token=HF_TOKEN)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
@@ -16,29 +15,25 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_PATH,
     torch_dtype=torch.float16,
     device_map="auto",
-    token=HF_TOKEN
-)
+    token=HF_TOKEN)
 
-# === Chat-style prompt (Resolution summarization) ===
+# Create prompt asking model to extract key problem a user is having
 def make_prompt(resolution_text: str) -> str:
     messages = [
         {"role": "system", "content": "You are a helpful support assistant."},
         {"role": "user", "content": f"""Here is a resolution log from a support ticket:
-
 {resolution_text.strip()}
-
 Please summarise the key actions taken to resolve the issue, clearly and concisely in plain English.
 Do not include the original problem, ticket numbers, greetings, or irrelevant details.
 Do not use bullet points or numbers. Keep the response under 100 words."""}
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False)
 
-# === Inference ===
+#Creating Inference
 @torch.inference_mode()
 def generate_summary(resolution_text: str, max_new_tokens: int = 160) -> str:
     prompt = make_prompt(resolution_text)
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
-
     outputs = model.generate(
         **inputs,
         max_new_tokens=max_new_tokens,
@@ -46,13 +41,11 @@ def generate_summary(resolution_text: str, max_new_tokens: int = 160) -> str:
         temperature=0.0,
         pad_token_id=tokenizer.eos_token_id,
     )
-
     generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
     decoded = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
-
     return decoded
 
-# === Main Script ===
+#Main script loop 
 def main():
     input_path = "Ticket_query_resolution.xlsx"
     out_path = "Ticket_resolution_summaries.csv"
@@ -60,8 +53,6 @@ def main():
     df = pd.read_excel(input_path, dtype={"TICKETID": str})
     if "TICKETID" not in df.columns or "RESOLUTION" not in df.columns:
         raise ValueError("Input file must contain columns: 'TICKETID' and 'RESOLUTION'.")
-
-    
 
     summaries = []
     for _, row in df.iterrows():
