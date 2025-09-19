@@ -35,7 +35,7 @@ def make_prompt(problem_text: str) -> str:
 
 {problem_text.strip()}
 
-Please rewrite the actual technical issue clearly in plain English, without greetings, thanks, or extra commentary. Keep it under 80 words."""}
+Please rewrite the actual technical issue clearly in plain English, without greetings, thanks, or extra commentary. Do not include any personal details such as passwords and usernames. Keep it under 80 words."""}
     ]
     return tokenizer.apply_chat_template(messages, tokenize=False)
 
