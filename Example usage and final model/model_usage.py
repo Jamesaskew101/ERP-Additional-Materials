@@ -12,6 +12,11 @@ MODEL_PATH = "../epoch_2"               # your fine-tuned model
 RETRIEVER_DATA_DIR = "../retriever_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 QUERY_FILE = "queries.txt"              # input .txt file (one query per line)
+DOMAIN_KEYWORDS_FILE = "../domain_keywords.txt"
+
+# === Load Domain-Specific Keywords ===
+with open(DOMAIN_KEYWORDS_FILE, "r") as f:
+    domain_keywords = set(line.strip().upper() for line in f if line.strip())
 
 # === Load Model & Tokenizer ===
 print("🧠 Loading model and tokenizer...")
@@ -79,13 +84,21 @@ def make_inference_prompt(query, similar_cases):
 """
 
 # === Inference with Retrieval ===
+print("🚀 Running inference on queries...")
 results = []
 
 for query in queries:
     # === Embed and Retrieve ===
     query_vec = embed_model.encode([query], normalize_embeddings=True)
     sims = cosine_similarity(query_vec, embeddings)[0]
-    top_idx = sims.argsort()[::-1][:3]
+
+    # === Domain keyword overlap boost ===
+    domain_boosts = metadata["tokens"].apply(lambda t: len(domain_keywords.intersection(t))).to_numpy()
+    domain_boosts_norm = (domain_boosts - domain_boosts.min()) / (domain_boosts.max() - domain_boosts.min() + 1e-8)
+
+    alpha, beta = 0.95, 0.05
+    hybrid_scores = alpha * sims + beta * domain_boosts_norm
+    top_idx = hybrid_scores.argsort()[::-1][:3]
 
     similar_cases = []
     for i in top_idx:
@@ -95,7 +108,7 @@ for query in queries:
             row["RESOLUTION_SUMMARY"],  # 1
             row["URGENCYCODE"],         # 2
             row["CATEGORY"],            # 3
-            sims[i]                     # 4 (similarity)
+            hybrid_scores[i]            # 4 (hybrid similarity)
         ))
 
     # === Build Prompt ===
@@ -128,29 +141,28 @@ for query in queries:
     result = {
         "query": query,
         "model_output": json_output,
-
         "similar_problem_1": similar_cases[0][0],
         "similar_solution_1": similar_cases[0][1],
         "urgency_1": similar_cases[0][2],
         "category_1": similar_cases[0][3],
         "similarity_1": similar_cases[0][4],
-
         "similar_problem_2": similar_cases[1][0],
         "similar_solution_2": similar_cases[1][1],
         "urgency_2": similar_cases[1][2],
         "category_2": similar_cases[1][3],
         "similarity_2": similar_cases[1][4],
-
         "similar_problem_3": similar_cases[2][0],
         "similar_solution_3": similar_cases[2][1],
         "urgency_3": similar_cases[2][2],
         "category_3": similar_cases[2][3],
         "similarity_3": similar_cases[2][4],
-
         "avg_similarity": np.mean([similar_cases[0][4], similar_cases[1][4], similar_cases[2][4]])
     }
 
     results.append(result)
+    print("🔹 Query:", query)
+    print("🤖 Output:", json_output)
+    print("—" * 80)
 
 # === Save Results ===
 def convert_np(obj):
@@ -165,3 +177,8 @@ with open("rag_txt_results.jsonl", "w", encoding="utf-8") as f:
 df = pd.DataFrame(results)
 df["model_output"] = df["model_output"].apply(json.dumps)
 df.to_csv("rag_txt_results.csv", index=False)
+
+print("\n✅ All outputs saved to:")
+print("- rag_txt_results.jsonl")
+print("- rag_txt_results.csv")
+
