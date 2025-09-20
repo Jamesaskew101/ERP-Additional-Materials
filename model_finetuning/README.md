@@ -17,15 +17,15 @@ The objective of this stage is to compare two parameter-efficient fine-tuning ap
        - `test.jsonl`
 
 2. **Fine-Tuning**
-   - `llora.py` → Runs LoRA fine-tuning  
-   - `Hybrid_test.py` → Runs Hybrid fine-tuning  
+   - `llora_tuning.py` → Runs LoRA fine-tuning  
+   - `hybrid_tuning.py` → Runs Hybrid fine-tuning  
 
    Both scripts were executed on the **CSF cluster** using **two A100 GPUs in parallel**.  
    Due to GPU requirements, these scripts **cannot be run locally** on standard devices.
 
    - Outputs:
-     - `llora_results.txt`, `llora_training_results.txt`
-     - `hybrid.txt`, `hybrid_training_results.txt`
+     - `llora_tuning_results.txt`, `llora_training_results.txt`
+     - `hybrid_tuning_results.txt`, `hybrid_training_results.txt`
 
 3. **Comparative Analysis**
    - `fine_tuning_analysis.ipynb`  
@@ -45,10 +45,10 @@ The objective of this stage is to compare two parameter-efficient fine-tuning ap
   - `test.jsonl`
 
 - **Fine-Tuning**
-  - `llora.py`
-  - `Hybrid_test.py`
-  - `llora_results.txt`, `llora_training_results.txt`
-  - `hybrid.txt`, `hybrid_training_results.txt`
+  - `llora_tuning.py`
+  - `Hybrid_tuning.py`
+  - `llora_tuning_results.txt`, 
+  - `hybrid_tuning_results.txt`,
 
 - **Analysis**
   - `fine_tuning_analysis.ipynb`
