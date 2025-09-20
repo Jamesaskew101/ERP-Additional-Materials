@@ -4,14 +4,13 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
 from trl import SFTTrainer
 from peft import LoraConfig, get_peft_model
 
-# === Config ===
+# config from hugging face
 MODEL_PATH = "meta-llama/Llama-3.1-8B-Instruct"
 HF_TOKEN = "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"
 TRAIN_FILE = "train1_final.jsonl"
 TEST_FILE = "test_clean.jsonl"
 
-# === Load Tokenizer and Model ===
-print("🧠 Loading model and tokenizer...")
+# Load tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, token=HF_TOKEN)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
@@ -23,8 +22,7 @@ model = AutoModelForCausalLM.from_pretrained(
     token=HF_TOKEN
 )
 
-# === Add LoRA adapters ===
-print("🔧 Adding LoRA adapters...")
+# Now apply LoRa adapters
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
@@ -35,12 +33,11 @@ lora_config = LoraConfig(
 )
 model = get_peft_model(model, lora_config)
 
-# === Load Datasets ===
-print(f"📄 Loading datasets: {TRAIN_FILE} (train), {TEST_FILE} (test)...")
+# Load train and test data files
 train_dataset = load_dataset("json", data_files=TRAIN_FILE, split="train")
 test_dataset = load_dataset("json", data_files=TEST_FILE, split="train")
 
-# === Format Prompts ===
+# Creating prompts
 instruction_prompt = """### Instruction:
 {}
 
@@ -56,7 +53,7 @@ def format_prompt(example):
 train_dataset = train_dataset.map(format_prompt)
 test_dataset = test_dataset.map(format_prompt)
 
-# === Tokenization ===
+# Tokenize the dataset
 def tokenize_fn(examples):
     return tokenizer(
         examples["text"],
@@ -68,7 +65,7 @@ def tokenize_fn(examples):
 tokenized_train = train_dataset.map(tokenize_fn, batched=True, remove_columns=train_dataset.column_names)
 tokenized_test = test_dataset.map(tokenize_fn, batched=True, remove_columns=test_dataset.column_names)
 
-# === Training Arguments ===
+# Training arguments, explained and justified in hybird train file
 training_args = TrainingArguments(
     output_dir="outputs",
     per_device_train_batch_size=2,
@@ -88,7 +85,7 @@ training_args = TrainingArguments(
     remove_unused_columns=False
 )
 
-# === Trainer ===
+# trainer
 trainer = SFTTrainer(
     model=model,
     args=training_args,
@@ -96,14 +93,13 @@ trainer = SFTTrainer(
     eval_dataset=tokenized_test
 )
 
-# === Train ===
-print("🚀 Starting training with LoRA...")
+# Start data training
 trainer_stats = trainer.train()
-print("✅ Training complete.")
+print("Training complete.")
 
-# === Save Fine-Tuned Model and Tokenizer ===
+# Save Fine-Tuned Model and Tokenizer 
 save_dir = "outputs/final_model"
 trainer.model.save_pretrained(save_dir)
 tokenizer.save_pretrained(save_dir)
 
-print(f"✅ Model and tokenizer (with LoRA) saved to {save_dir}")
+print(f"Model and tokenizer (with LoRA) saved to {save_dir}")
