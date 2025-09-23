@@ -78,13 +78,13 @@ First access to model via hugging face is needed. then need to request access to
 ### Data Preperation 
 In the data_preprocessing folder first run data_prep1.ipynb, followed by problem_prep.py and solution_prep.py to give a output of final_output.csv.
 
-## Model Training
+### Model Training
 Pass this final_output.csv through Generate_test_data.py. Then run the Hybrid_tuning.py
 
-## Retriver Data
+### Retriver Data
 - Then run the retriver_embeddings_generation.py which will then create embeddings for the retrival process
 
-## Final Model
+### Final Model
 - Final model is then ready to run, recomended implementation can be seen in the Example usage and final model folder.
 
 ## Environment Setup
