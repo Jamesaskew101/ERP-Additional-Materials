@@ -91,6 +91,7 @@ To create the environment:
 conda create --name llama3train python=3.10
 conda activate llama3train
 pip install -r requirements.txt
+```
 
 
 ## Hardware Requirements
