@@ -13,7 +13,7 @@ The aim of preprocessing is to transform raw support ticket data into a structur
    - `Copy_of_Tickets_cleaned.xlsx`
    - `Ticket history 3.xlsx`
 
-   These files were provided as the raw input datasets containing support ticket logs.
+   These files are not provided due to the sensitive nature of our project. Full dataset can be accessed apon request from the Datel team or speak to Andrea Lagna.
 
 2. **Preliminary Cleaning**
    - `data_prep1.ipynb`
@@ -33,13 +33,14 @@ The aim of preprocessing is to transform raw support ticket data into a structur
 4. **Final Output**
    - `final_output.csv`
 
-   Combines the processed problems and solutions into a single structured dataset suitable for downstream tasks (e.g. training, evaluation, or building a triage system).
+   Combines the processed problems and solutions into a single structured dataset suitable for downstream tasks (e.g. training, evaluation, or building a triage system). This data file again is again hidden due data procoutions taken with this project.
 
 ---
 
 ## 🔹 Files in This Folder
 
 - **Raw Data**
+  - Avaliable apon request 
   - `Copy_of_Tickets_cleaned.xlsx`
   - `Ticket history 3.xlsx`
 
@@ -49,5 +50,6 @@ The aim of preprocessing is to transform raw support ticket data into a structur
   - `solution_prep.py` → Summarises ticket "RESOLUTION" fields
 
 - **Outputs**
+  -  Avaliable apon request 
   - `final_output.csv` → Fully processed dataset
 
