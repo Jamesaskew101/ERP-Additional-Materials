@@ -85,7 +85,7 @@ Pass this final_output.csv through Generate_test_data.py. Then run the Hybrid_tu
 - Then run the retriver_embeddings_generation.py which will then create embeddings for the retrival process
 
 ## Final Model
-- Final model is then ready to run, recomended implementation can be seen in the model_implementation folder.
+- Final model is then ready to run, recomended implementation can be seen in the Example usage and final model folder.
 
 ## Environment Setup
 
