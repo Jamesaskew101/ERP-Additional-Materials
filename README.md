@@ -90,7 +90,7 @@ To create the environment:
 ```bash
 conda create --name llama3train python=3.10
 conda activate llama3train
-pip install -r requirements.txt
+pip install -r requirements.txt ```
 
 ## Hardware Requirements
 
@@ -99,3 +99,6 @@ pip install -r requirements.txt
 - Model checkpoint size:  
   - Base LLaMA 3.2 model: ~8B parameters  
   - Fine-tuned LoRA adapter weights: ~2–3 GB
+
+
+
