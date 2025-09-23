@@ -8,15 +8,14 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import re
 
-# === Config ===
+# Load releveant raw model and retriver 
 MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
-HF_TOKEN = "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"
+HF_TOKEN = "hf_*******"
 TEST_FILE = "../test.jsonl"
 RETRIEVER_DATA_DIR = "../retriever_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 
-# === Load Model & Tokenizer ===
-print("🧠 Loading LLaMA 3.1 Instruct model and tokenizer...")
+# Load model and tokenzier
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, token=HF_TOKEN)
 tokenizer.pad_token = tokenizer.eos_token
 model = AutoModelForCausalLM.from_pretrained(
@@ -27,17 +26,15 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 model.eval()
 
-# === Load Retriever Embeddings & Metadata ===
-print("🔍 Loading retriever...")
+# Load Retriever and embeddings
 embeddings = np.load(f"{RETRIEVER_DATA_DIR}/embeddings.npy")
 metadata = pd.read_parquet(f"{RETRIEVER_DATA_DIR}/metadata.parquet")
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 
-# === Load Test Data ===
-print("📄 Loading test data...")
+# load the held-out test dataset
 dataset = load_dataset("json", data_files=TEST_FILE, split="train")
 
-# === Prompt Template ===
+# Prompt template generation
 instruction_template = """You are a support assistant. Use the urgency code already provided and reference past similar cases.
 
 ### Similar Past Cases:
@@ -80,14 +77,13 @@ def make_inference_prompt(query, similar_cases, chosen_urgency):
 ### Response:
 """
 
-# === Inference with Retrieval ===
-print("🚀 Running RAG-style inference on dataset...")
+# Inference with retrieval
 results = []
 
 for item in dataset:
     query = item["instruction"]
 
-    # === Embed and Retrieve ===
+    # Embed and Retrieve 
     query_vec = embed_model.encode([query], normalize_embeddings=True)
     sims = cosine_similarity(query_vec, embeddings)[0]
     top_idx = sims.argsort()[::-1][:3]
@@ -103,13 +99,13 @@ for item in dataset:
             sims[i]                   # 4 (similarity)
         ))
 
-    # === Urgency Decision ===
+    # Urgency decision
     chosen_urgency = similar_cases[0][2] if similar_cases[0][4] >= 0.7 else 3
 
-    # === Build Prompt ===
+    # Build the prompt
     prompt = make_inference_prompt(query, similar_cases, chosen_urgency)
 
-    # === Inference ===
+    # Interface generation
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=1024).to("cuda")
     with torch.no_grad():
         outputs = model.generate(
@@ -122,7 +118,7 @@ for item in dataset:
     generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
     raw_output = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
 
-    # === Parse Output ===
+    # Match the data
     match = re.search(r"\{.*?\}", raw_output, re.DOTALL)
     if match:
         try:
@@ -133,7 +129,7 @@ for item in dataset:
     else:
         json_output = {"error": "No JSON found", "raw": raw_output}
 
-    # === Save Results (with similarity scores) ===
+    # save results with similarity score and retrived cases
     result = {
         "instruction": query,
         "expected_output": item["output"],
@@ -161,12 +157,9 @@ for item in dataset:
     }
 
     results.append(result) 
-    print("🔹 Instruction:", query)
-    print("🤖 Output:", json_output)
-    print("✅ Expected:", item["output"])
-    print("—" * 80)
 
-# === Save Results ===
+
+# Save the final results
 def convert_np(obj):
     if isinstance(obj, np.generic):
         return obj.item()
@@ -180,6 +173,6 @@ df = pd.DataFrame(results)
 df["model_output"] = df["model_output"].apply(json.dumps)
 df.to_csv("llama3_rag_results.csv", index=False)
 
-print("\n✅ All outputs saved to:")
+print(" All outputs saved to:")
 print("- llama3_rag_results.jsonl")
 print("- llama3_rag_results.csv")
