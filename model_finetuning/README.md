@@ -7,7 +7,7 @@ The objective of this stage is to compare two parameter-efficient fine-tuning ap
 
 ---
 
-## 🔹 Workflow Overview
+## Workflow Overview
 
 1. **Data Preparation**
    - `Generate_test_data.py`  
@@ -37,7 +37,7 @@ The objective of this stage is to compare two parameter-efficient fine-tuning ap
 
 ---
 
-## 🔹 Files in This Folder
+## Files in This Folder
 
 - **Data Split**
   - `Generate_test_data.py`
@@ -55,10 +55,12 @@ The objective of this stage is to compare two parameter-efficient fine-tuning ap
 
 ---
 
-## 🔹 Notes
+## Notes
 
 - Training was performed on the **CSF (Computational Shared Facility)**, University cluster.  
 - Both methods used **Meta-LLaMA 3.1** as the base model.  
 - Fine-tuning experiments were executed under identical conditions for fair comparison.  
 - Local reproduction is limited to the analysis stage (`fine_tuning_analysis.ipynb`) as training requires GPU resources.
+- The model we proceed with is the generated through 'hybrid training'.
+- The llora fine tuned model is just there for comparaitive purposes.
 
