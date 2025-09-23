@@ -91,3 +91,11 @@ To create the environment:
 conda create --name llama3train python=3.10
 conda activate llama3train
 pip install -r requirements.txt
+
+## Hardware Requirements
+
+- Fine-tuning and hybrid training were performed on a single **NVIDIA A100 GPU (40GB VRAM)**.  
+- The fine-tuned LLaMA 3.2 model (with LoRA adapters) requires approximately **8–10 GB VRAM for inference** and around **40 GB VRAM for full fine-tuning**.  
+- Model checkpoint size:  
+  - Base LLaMA 3.2 model: ~8B parameters  
+  - Fine-tuned LoRA adapter weights: ~2–3 GB
