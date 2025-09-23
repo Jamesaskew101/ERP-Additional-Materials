@@ -6,7 +6,7 @@ from peft import LoraConfig, get_peft_model
 
 # config from hugging face
 MODEL_PATH = "meta-llama/Llama-3.1-8B-Instruct"
-HF_TOKEN = "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"
+HF_TOKEN = "hf_***********"
 TRAIN_FILE = "train1_final.jsonl"
 TEST_FILE = "test_clean.jsonl"
 
