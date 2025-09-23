@@ -21,11 +21,11 @@ This repository is organised into the following main components:
   - Outputs structured datasets (not included here due to confidentiality).  
 
 - **`model_finetuning/`**  
-   Provides the infulstructure for model fine tuning.
+   Provides the infrastructure for model fine tuning.
   - Uses two methods of fine-tuning for comparitive analysis.
   - Final model fine-tuning to be used is that of the Hybrid_tuning.py.
   - Analyses training results using fine_tuning_analysis.ipynb.
-  - Output is the trained model (final_model), avaliable apon request.
+  - Output is the trained model (final_model), avaliable upon request.
 
 - **`model_analysis/`**  
   Provides scripts for evaluating model performance comparing to raw model.
@@ -74,7 +74,7 @@ These files contain proprietary customer support data and cannot be shared publi
 For reproducibility:
 - The repository includes **all preprocessing, training, and evaluation scripts**.  
 - Data paths are maintained in the code so that users with appropriate access can reproduce results by placing the original files in the same directory structure.  
-- Data can be accessed apon request.
+- Data can be accessed upon request.
 
 ## Reproduction of Final Model
 
