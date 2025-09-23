@@ -25,6 +25,18 @@ Due to **data confidentiality and GDPR restrictions**, the following files are *
 - `metadata.parquet`
 
 These files contain proprietary customer support data and cannot be shared publicly.  
+- **Base Model:**  
+  This project builds on **Meta’s LLaMA 3.2** model, which must be downloaded separately from  
+  [Hugging Face](https://huggingface.co/meta-llama) or [Meta’s official site](https://www.llama.com/llama-downloads/).  
+  Access requires an approved Hugging Face account and an access token.  
+
+- **Hugging Face Token:**  
+  For security reasons, the Hugging Face token used during experimentation has been **redacted (*****)** and is **not included** in this repository.  
+  Users must supply their own valid token.  
+
+- **Fine-Tuned Model:**  
+  The final fine-tuned model (including LoRA adapter weights) is **too large to be uploaded** to GitHub.  
+  If examiners or collaborators require access to the model for verification, it can be provided directly upon request.  
 
 For reproducibility:
 - The repository includes **all preprocessing, training, and evaluation scripts**.  
