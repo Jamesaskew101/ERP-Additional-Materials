@@ -35,6 +35,7 @@ This repository is organised into the following main components:
   - Built with `sentence-transformers/all-MiniLM-L6-v2`.  
   - Enables retrieval-augmented generation (RAG) by matching new queries to past tickets.  
   - The embeddings here are placeholders; full retriever data is excluded due to confidentiality.
+  
 
 ## Data Availability
 
@@ -72,6 +73,31 @@ For reproducibility:
 - Data paths are maintained in the code so that users with appropriate access can reproduce results by placing the original files in the same directory structure.  
 - Data can be accessed apon request.
 
+## Reproduction of final model and results
+
+### Overview
+The **Hybrid Fine-Tuning** method is the final approach used in this project.  
+
+### Setup Process
+
+#### Data Preparation
+- Run the scripts in `data_preprocessing/` to clean and normalize raw ticket data.  
+
+#### Hybrid Fine-Tuning
+- run Hybrid_tuning.ipynb.  
+- LoRA adapter weights are trained on top of the base LLaMA 3.2 model.  
+- The output is a **final_model**, consisting of LoRA weights that can be merged with the base model.
+
+#### Evaluation
+- Performance evaluation is carried out with scripts in `model_analysis/`.  
+- Final test results can be obtained by running: hybrid_test.py followed by 
+
+- Results are stored in large CSV output files (excluded due to confidentiality) and summarized in `model_analysis/model_analysis.ipynb`.
+
+### Results Summary
+- **Performance:** Hybrid fine-tuning outperforms both raw and standard fine-tuned models on ERP support ticket tasks.  
+- **Efficiency:** Inference requires 8–10 GB VRAM, while full fine-tuning requires ~40 GB VRAM.  
+- **Analysis:** Retrieval accuracy, F1 score, and recall all improved using the hybrid approach.  
 
 ## Environment Setup
 
