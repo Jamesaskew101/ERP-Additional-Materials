@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Getting pathway and HF token from hugging face
 MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B-Instruct"
-HF_TOKEN = "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"
+HF_TOKEN = "hf_************"
 
 # Load Tokenizer and Model 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, token=HF_TOKEN)
