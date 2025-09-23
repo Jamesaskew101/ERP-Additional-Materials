@@ -21,6 +21,8 @@ Due to **data confidentiality and GDPR restrictions**, the following files are *
 - `train.jsonl`
 - `raw_results.csv`
 - `hybrid_results.csv`
+- `embeddings.npy`
+- `metadata.parquet`
 
 These files contain proprietary customer support data and cannot be shared publicly.  
 
