@@ -43,4 +43,4 @@ test_dataset = Dataset.from_pandas(records_df.iloc[test_df.index])
 train_dataset.to_json("train.jsonl", orient="records", lines=True)
 test_dataset.to_json("test.jsonl", orient="records", lines=True)
 
-print(f"✅ Saved {len(train_df)} train and {len(test_df)} test examples (CSV cleaned + JSONL for training).")
+print(f"Saved {len(train_df)} train and {len(test_df)} test examples (CSV cleaned + JSONL for training).")
