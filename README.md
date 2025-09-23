@@ -28,10 +28,10 @@ This repository is organised into the following main components:
   Provides scripts for evaluating model performance comparing to raw model.
   - Tests model on test.jsonl.
   - Computes embedding similarity, retrieval scores, and other evaluation metrics all stored in large file with retrieved cases (hybrid_results.csv).  
-  - Includes analysis of resolution accuracy, urgency prediction, and error cases.  
+  - model_analysis.ipynb includes analysis of overall metrics as well as a deeper analysis of.  
 
 - **`retriever_data/`**  
-  Contains embeddings and metadata used for semantic retrieval.  
+  Contains the process of generating embeddings and metadata used for semantic retrieval.  
   - Built with `sentence-transformers/all-MiniLM-L6-v2`.  
   - Enables retrieval-augmented generation (RAG) by matching new queries to past tickets.  
   - The embeddings here are placeholders; full retriever data is excluded due to confidentiality.
