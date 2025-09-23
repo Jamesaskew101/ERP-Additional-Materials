@@ -18,14 +18,16 @@ This repository is organised into the following main components:
   - Outputs structured datasets (not included here due to confidentiality).  
 
 - **`model_finetuning/`**  
-   Provides the infulstructure for model fine tuning  
+   Provides the infulstructure for model fine tuning.
   - Uses two methods of fine-tuning for comparitive analysis.
-  - Final model fine-tuning to be used is that of the Hybrid_tuning.py
-  - Analyses training proceedures and results using 
+  - Final model fine-tuning to be used is that of the Hybrid_tuning.py.
+  - Analyses training results using fine_tuning_analysis.ipynb.
+  - Output is the trained model (final_model), avaliable apon request.
 
 - **`model_analysis/`**  
-  Provides scripts for evaluating model performance.  
-  - Computes BERTScore, embedding similarity, retrieval scores, and other evaluation metrics.  
+  Provides scripts for evaluating model performance comparing to raw model.
+  - Tests model on test.jsonl.
+  - Computes embedding similarity, retrieval scores, and other evaluation metrics all stored in large file with retrieved cases (hybrid_results.csv).  
   - Includes analysis of resolution accuracy, urgency prediction, and error cases.  
 
 - **`retriever_data/`**  
