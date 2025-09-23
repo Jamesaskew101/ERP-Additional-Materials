@@ -10,7 +10,7 @@ import re
 import torch
 
 # Configure load, fine tuned model , embedded model to calculate retiver similarity, and domain specific words. 
-MODEL_PATH = "../epoch_2"
+MODEL_PATH = "../final_model"
 TEST_FILE = "../test.jsonl"
 RETRIEVER_DATA_DIR = "../retriever_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
