@@ -1,11 +1,11 @@
 # Model Analysis
 
-This folder contains the evaluation pipeline for comparing the **raw LLaMA-3.1 model** against the **fine-tuned hybrid model** on the support ticket prediction task.  
+This folder contains the evaluation pipeline for comparing the **raw LLaMA-3.1 model** against the **fine-tuned hybrid model** on the support ticket prediction task. Note that the fine-tuned model is the final the final one, raw model is used for comparitive review only. 
 The goal is to measure performance across **Urgency Code**, **Category**, and **Resolution** prediction.
 
 ---
 
-## 📂 Contents
+## Contents
 
 - `raw_Lama3.py` → Runs inference with the raw, untrained **LLaMA-3.1-8B-Instruct** model on the test set.  
 - `hybrid_test.py` → Runs inference with the **fine-tuned hybrid model** on the same test set.  
@@ -23,7 +23,7 @@ The goal is to measure performance across **Urgency Code**, **Category**, and **
 
 ---
 
-## ⚙️ Workflow
+## Workflow
 
 1. **Run inference**  
    - `raw_Lama3.py` → generate baseline predictions  
@@ -37,7 +37,7 @@ The goal is to measure performance across **Urgency Code**, **Category**, and **
 
 ---
 
-## 📊 Purpose
+## Purpose
 
 This analysis highlights the improvements achieved through fine-tuning:
 - More accurate **Urgency Code** and **Category** predictions.  
