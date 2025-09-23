@@ -70,4 +70,24 @@ These files contain proprietary customer support data and cannot be shared publi
 For reproducibility:
 - The repository includes **all preprocessing, training, and evaluation scripts**.  
 - Data paths are maintained in the code so that users with appropriate access can reproduce results by placing the original files in the same directory structure.  
-- Data can be accessed apon request. 
+- Data can be accessed apon request.
+
+
+## Environment Setup
+
+This project was developed and tested with:
+- Python 3.10
+- PyTorch 2.8.0
+- Hugging Face Transformers 4.56.1
+- Datasets 4.1.0
+- Sentence-Transformers 5.1.0
+- scikit-learn 1.7.2
+
+All required dependencies are listed in [requirements.txt](requirements.txt).
+
+To create the environment:
+
+```bash
+conda create --name llama3train python=3.10
+conda activate llama3train
+pip install -r requirements.txt
