@@ -57,7 +57,7 @@ Due to **data confidentiality and GDPR restrictions**, the following files are *
 These files contain proprietary customer support data and cannot be shared publicly.  
 - **Base Model:**  
   This project builds on **Meta’s LLaMA 3.2** model, which must be downloaded separately from  
-  [Hugging Face](https://huggingface.co/meta-llama) or [Meta’s official site](https://www.llama.com/llama-downloads/).  
+  [Hugging Face](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) or [Meta’s official site](https://www.llama.com/llama-downloads/).  
   Access requires an approved Hugging Face account and an access token.  
 
 - **Hugging Face Token:**  
