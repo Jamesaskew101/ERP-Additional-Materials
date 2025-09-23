@@ -7,6 +7,32 @@ This project makes use of Meta’s **LLaMA 3.2** model under the
 A full summary of licensing terms, attribution requirements, and the 700M MAU clause 
 can be found in the [LICENSE README](LICENSE/README.md).
 
+## Repository Structure
+
+This repository is organised into the following main components:
+
+- **`data_preprocessing/`**  
+  Contains scripts and notebooks for cleaning and preparing the raw support ticket data.  
+  - Handles normalisation of text, and preparation of overall data.
+  - This also extracts clean solution and problem process using a raw LLaMA 3.2 model, needing high computational resources to run.  
+  - Outputs structured datasets (not included here due to confidentiality).  
+
+- **`model_finetuning/`**  
+   Provides the infulstructure for model fine tuning  
+  - Uses two methods of fine-tuning for comparitive analysis.
+  - Final model fine-tuning to be used is that of the hybrid_fine_tune.py   
+
+- **`model_analysis/`**  
+  Provides scripts for evaluating model performance.  
+  - Computes BERTScore, embedding similarity, retrieval scores, and other evaluation metrics.  
+  - Includes analysis of resolution accuracy, urgency prediction, and error cases.  
+
+- **`retriever_data/`**  
+  Contains embeddings and metadata used for semantic retrieval.  
+  - Built with `sentence-transformers/all-MiniLM-L6-v2`.  
+  - Enables retrieval-augmented generation (RAG) by matching new queries to past tickets.  
+  - The embeddings here are placeholders; full retriever data is excluded due to confidentiality.
+
 ## Data Availability
 
 This project makes use of confidential ERP support ticket datasets provided by Datel.  
