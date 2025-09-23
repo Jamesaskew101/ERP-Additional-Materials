@@ -73,19 +73,34 @@ For reproducibility:
 - Data paths are maintained in the code so that users with appropriate access can reproduce results by placing the original files in the same directory structure.  
 - Data can be accessed apon request.
 
-## Reproduction of final model
-First access to model via hugging face is needed. then need to request access to data. 
-### Data Preperation 
-In the data_preprocessing folder first run data_prep1.ipynb, followed by problem_prep.py and solution_prep.py to give a output of final_output.csv.
+## Reproduction of Final Model
 
-### Model Training
-Pass this final_output.csv through Generate_test_data.py. Then run the Hybrid_tuning.py
+To reproduce the final hybrid fine-tuned model, follow the steps below:
 
-### Retriver Data
-- Then run the retriver_embeddings_generation.py which will then create embeddings for the retrival process
+### 1. Model Access
+- Request access to the **LLaMA 3.2 base model** via [Hugging Face](https://huggingface.co/meta-llama) (approval required).  
+- Request access to the **Datel support ticket dataset** (confidential, available on request).  
 
-### Final Model
-- Final model is then ready to run, recomended implementation can be seen in the Example usage and final model folder.
+### 2. Data Preparation
+Navigate to the `data_preprocessing/` folder and run the following in order:  
+1. `data_prep1.ipynb`  
+2. `problem_prep.py`  
+3. `solution_prep.py`  
+
+These steps generate the cleaned dataset `final_output.csv`.  
+
+### 3. Model Training
+1. Pass `final_output.csv` through `Generate_test_data.py` to create train/test splits.  
+2. Run `Hybrid_tuning.py` to fine-tune the model with LoRA adapters.  
+
+### 4. Retriever Data
+Run `retriever_embeddings_generation.py` to build the retrieval index:  
+- Produces `embeddings.npy` and `metadata.parquet`.  
+- These files are required for retrieval-augmented generation (RAG).  
+
+### 5. Final Model Usage
+Once training and retriever data are complete, the final model is ready for inference.  
+- Example usage is provided in the `Example_usage/` and `final_model/` folders.  
 
 ## Environment Setup
 
