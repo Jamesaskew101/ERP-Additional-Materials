@@ -37,7 +37,7 @@ The aim of preprocessing is to transform raw support ticket data into a structur
 
 ---
 
-## 🔹 Files in This Folder
+## Files in This Folder
 
 - **Raw Data**
   - Avaliable apon request 
