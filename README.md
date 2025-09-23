@@ -84,20 +84,15 @@ The **Hybrid Fine-Tuning** method is the final approach used in this project.
 - Run the scripts in `data_preprocessing/` to clean and normalize raw ticket data.  
 
 #### Hybrid Fine-Tuning
-- run Hybrid_tuning.ipynb.  
-- LoRA adapter weights are trained on top of the base LLaMA 3.2 model.  
+-
+- run Hybrid_tuning.ipynb to actually fine tune the model.
+- 
 - The output is a **final_model**, consisting of LoRA weights that can be merged with the base model.
 
 #### Evaluation
 - Performance evaluation is carried out with scripts in `model_analysis/`.  
-- Final test results can be obtained by running: hybrid_test.py followed by 
+- Final test results can be obtained by running: hybrid_test.py followed by inputting the output file into evaluate_models_outputs.py.
 
-- Results are stored in large CSV output files (excluded due to confidentiality) and summarized in `model_analysis/model_analysis.ipynb`.
-
-### Results Summary
-- **Performance:** Hybrid fine-tuning outperforms both raw and standard fine-tuned models on ERP support ticket tasks.  
-- **Efficiency:** Inference requires 8–10 GB VRAM, while full fine-tuning requires ~40 GB VRAM.  
-- **Analysis:** Retrieval accuracy, F1 score, and recall all improved using the hybrid approach.  
 
 ## Environment Setup
 
