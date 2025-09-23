@@ -9,7 +9,6 @@ The base model weights are **not included** in this repository.
 They must be obtained separately from [Hugging Face](https://huggingface.co/meta-llama) or [Meta’s LLaMA download page](https://www.llama.com/llama-downloads/) after requesting access and agreeing to Meta’s terms.  
 
 We provide only:
-- **LoRA adapter weights** (`epoch_2/`) trained for this research.  
 - **Training and evaluation code** to reproduce the experiments.  
 
 ### License Terms
