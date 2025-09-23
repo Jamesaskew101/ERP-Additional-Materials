@@ -73,26 +73,19 @@ For reproducibility:
 - Data paths are maintained in the code so that users with appropriate access can reproduce results by placing the original files in the same directory structure.  
 - Data can be accessed apon request.
 
-## Reproduction of final model and results
+## Reproduction of final model
+First access to model via hugging face is needed. then need to request access to data. 
+### Data Preperation 
+In the data_preprocessing folder first run data_prep1.ipynb, followed by problem_prep.py and solution_prep.py to give a output of final_output.csv.
 
-### Overview
-The **Hybrid Fine-Tuning** method is the final approach used in this project.  
+## Model Training
+Pass this final_output.csv through Generate_test_data.py. Then run the Hybrid_tuning.py
 
-### Setup Process
+## Retriver Data
+- Then run the retriver_embeddings_generation.py which will then create embeddings for the retrival process
 
-#### Data Preparation
-- Run the scripts in `data_preprocessing/` to clean and normalize raw ticket data.  
-
-#### Hybrid Fine-Tuning
--
-- run Hybrid_tuning.ipynb to actually fine tune the model.
-- 
-- The output is a **final_model**, consisting of LoRA weights that can be merged with the base model.
-
-#### Evaluation
-- Performance evaluation is carried out with scripts in `model_analysis/`.  
-- Final test results can be obtained by running: hybrid_test.py followed by inputting the output file into evaluate_models_outputs.py.
-
+## Final Model
+- Final model is then ready to run, recomended implementation can be seen in the model_implementation folder.
 
 ## Environment Setup
 
