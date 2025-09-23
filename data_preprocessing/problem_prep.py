@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 
 #Model configuration
 MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B-Instruct"
-HF_TOKEN = "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"
+HF_TOKEN = "hf_***************"
 
 #Load tokenizer
 try:
@@ -58,7 +58,7 @@ def extract_problem(problem_text: str, max_new_tokens: int = 80) -> str:
 
     return decoded
 
-# === Main Script: Load CSV, Clean, Save ===
+# Main Script: Load CSV, Clean, Save 
 def main():
     input_path = "Ticket_file_clean.csv"
     out_path = "Ticket_clean_problems.csv"
