@@ -20,7 +20,8 @@ This repository is organised into the following main components:
 - **`model_finetuning/`**  
    Provides the infulstructure for model fine tuning  
   - Uses two methods of fine-tuning for comparitive analysis.
-  - Final model fine-tuning to be used is that of the hybrid_fine_tune.py   
+  - Final model fine-tuning to be used is that of the Hybrid_tuning.py
+  - Analyses training proceedures and results using 
 
 - **`model_analysis/`**  
   Provides scripts for evaluating model performance.  
