@@ -1,5 +1,8 @@
 # ERP-Additional-Materials
-James Askew- 10857809, additional materials
+James Askew- 10857809
+
+This repository contains the Additional Materials that support ERP submission.
+It includes preprocessing scripts, fine-tuning pipelines, retriever data generation, and model evaluation code.
 
 This project makes use of Meta’s **LLaMA 3.2** model under the 
 [LLaMA 3.2 Community License Agreement](https://www.llama.com/llama-downloads/).
