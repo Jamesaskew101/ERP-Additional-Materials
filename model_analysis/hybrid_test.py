@@ -5,41 +5,48 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-from nltk.tokenize import word_tokenize
+from peft import PeftModel
 import re
 import torch
 
-# Configure load, fine tuned model , embedded model to calculate retiver similarity, and domain specific words. 
-MODEL_PATH = "../final_model"
+# Load in baseline model and the path to fine tuned weights
+BASE_MODEL = "meta-llama/Llama-3.1-8B-Instruct"
+ADAPTER_PATH = "../final_model"   # fine tuned weights
 TEST_FILE = "../test.jsonl"
+
+# Load in held-out test data, as well as retriver and domain key words
 RETRIEVER_DATA_DIR = "../retriever_data"
 EMBED_MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 DOMAIN_KEYWORDS_FILE = "../domain_keywords.txt"
+HF_TOKEN = "hf_***************"
 
-#Load Domain specific keywords
+# Load Domain-Specific Keywords 
 with open(DOMAIN_KEYWORDS_FILE, "r") as f:
     domain_keywords = set(line.strip().upper() for line in f if line.strip())
 
-# Load Model & Tokenizer 
-tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, local_files_only=True)
-tokenizer.pad_token = tokenizer.eos_token
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_PATH,
-    local_files_only=True,
-    device_map="auto",
-    torch_dtype=torch.float16
+#  Load Base Model & Attach LoRA Adapters 
+base_model = AutoModelForCausalLM.from_pretrained(
+    BASE_MODEL,
+    token=HF_TOKEN,
+    torch_dtype=torch.float16,
+    device_map="auto"
 )
+model = PeftModel.from_pretrained(base_model, ADAPTER_PATH)
 model.eval()
 
-# Load retriever embeddings and metadata 
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL, token=HF_TOKEN)
+tokenizer.pad_token = tokenizer.eos_token
+
+# Load retirver and the retriver data generated on the train dataset
 embeddings = np.load(f"{RETRIEVER_DATA_DIR}/embeddings.npy")
 metadata = pd.read_parquet(f"{RETRIEVER_DATA_DIR}/metadata.parquet")
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
 
-# Load test data 
+# Load in the test dataset
 dataset = load_dataset("json", data_files=TEST_FILE, split="train")
 
-# Create prompt template which includes information from the three most similar cases
+# Generate the prompt with three most similar cases
 instruction_template = """You are a support assistant. Use the urgency code and category from past similar cases to help assess new queries.
 
 ### Similar Past Cases:
@@ -81,7 +88,8 @@ def make_inference_prompt(query, similar_cases):
 ### Response:
 """
 
-# Inference with retrieval process
+# Interface with retrival 
+print("🚀 Running RAG-style inference on dataset...")
 results = []
 
 for item in dataset:
@@ -91,13 +99,13 @@ for item in dataset:
     query_vec = embed_model.encode([query], normalize_embeddings=True)
     sims = cosine_similarity(query_vec, embeddings)[0]
 
-    # Compute domain-specific keyword overlap
+    # Domain-specific keyword overlap
     domain_boosts = metadata["tokens"].apply(lambda t: len(domain_keywords.intersection(t))).to_numpy()
     domain_boosts_norm = (domain_boosts - domain_boosts.min()) / (domain_boosts.max() - domain_boosts.min() + 1e-8)
 
     # Hybrid score (cosine + keyword match)
-    alpha = 0.95  # cosine similarity weight
-    beta = 0.05  # domain keyword match weight
+    alpha = 0.95
+    beta = 0.05
     hybrid_scores = alpha * sims + beta * domain_boosts_norm
     top_idx = hybrid_scores.argsort()[::-1][:3]
 
@@ -113,7 +121,7 @@ for item in dataset:
             hybrid_scores[i]
         ))
 
-    # Prompt Assembly
+    # Prompt generation
     prompt = make_inference_prompt(query, similar_cases)
 
     # Inference
@@ -129,7 +137,7 @@ for item in dataset:
     generated_ids = outputs[0][inputs["input_ids"].shape[-1]:]
     raw_output = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
 
-    # Parse Output
+    # Parse output
     match = re.search(r"\{.*?\}", raw_output, re.DOTALL)
     if match:
         try:
@@ -139,7 +147,7 @@ for item in dataset:
     else:
         json_output = {"error": "No JSON found", "raw": raw_output}
 
-    # Save Result
+    # Save results with three most similar historical cases
     result = {
         "instruction": query,
         "expected_output": item["output"],
@@ -167,8 +175,9 @@ for item in dataset:
     }
 
     results.append(result)
+    
 
-# Save results 
+# Save the final results
 def convert_np(obj):
     if isinstance(obj, np.generic):
         return obj.item()
@@ -182,6 +191,3 @@ df = pd.DataFrame(results)
 df["model_output"] = df["model_output"].apply(json.dumps)
 df.to_csv("rag_test_results.csv", index=False)
 
-print("All outputs saved to:")
-print("- rag_test_results.jsonl")
-print("- rag_test_results.csv")
