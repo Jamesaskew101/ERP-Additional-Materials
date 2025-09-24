@@ -117,13 +117,7 @@ This project was developed and tested with:
 
 All required dependencies are listed in [requirements.txt](requirements.txt).
 
-To create the environment:
 
-```bash
-conda create --name llama3train python=3.10
-conda activate llama3train
-pip install -r requirements.txt
-```
 
 
 ## Hardware Requirements
