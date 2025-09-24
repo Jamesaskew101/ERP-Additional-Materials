@@ -1,5 +1,5 @@
 # ERP-Additional-Materials
-James Askew- 10857809
+10857809
 
 This repository contains the Additional Materials that support ERP submission.
 It includes preprocessing scripts, fine-tuning pipelines, retriever data generation, and model evaluation code.
