@@ -29,7 +29,7 @@ for col in META_COLS:
 #  Drop rows with missing PROBLEM or SOLUTION 
 before = len(df)
 df = df[(df["CLEAN_PROBLEM"].str.len() > 0) & (df["RESOLUTION_SUMMARY"].str.len() > 0)].reset_index(drop=True)
-print(f"✅ After filtering PROBLEM & SOLUTION, kept {len(df)} rows out of {before}")
+
 
 # Text Normalization, getting rid of white space
 def normalize_text(text: str) -> str:
